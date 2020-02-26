@@ -1,13 +1,10 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +25,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder> {
+public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder>{
 
     private final List<Neighbour> mNeighbours;
-    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
+    MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
         mNeighbours = items;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -51,20 +49,16 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mNeighbourAvatar);
 
-        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new DeleteNeighbourEvent(neighbour));
-            }
-        });
+        holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteNeighbourEvent(neighbour)));
 
-        holder.mListItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ProfileNeighbourActivity.class);
-                ActivityCompat.startActivity(v.getContext(), intent, null);
-
-            }
+        holder.mListItem.setOnClickListener(v -> {
+            Intent mIntent = new Intent(v.getContext(), ProfileNeighbourActivity.class);
+            mIntent.putExtra("NAME",neighbour.getName());
+            mIntent.putExtra("AVATAR",neighbour.getAvatarUrl());
+            mIntent.putExtra("ADDRESS",neighbour.getAddress());
+            mIntent.putExtra("PHONE",neighbour.getPhoneNumber());
+            mIntent.putExtra("ABOUT",neighbour.getAboutMe());
+            ActivityCompat.startActivity(v.getContext(), mIntent, null);
         });
     }
 
@@ -73,7 +67,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         return mNeighbours.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_list_avatar)
         public ImageView mNeighbourAvatar;
         @BindView(R.id.item_list_name)
@@ -83,7 +77,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         @BindView(R.id.item_neighbour)
         public ConstraintLayout mListItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

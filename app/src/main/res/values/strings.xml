@@ -5,4 +5,5 @@
     <string name="activity_new_neighbour">New neighbour</string>
     <string name="previous_button">Previous button</string>
     <string name="avatar_profile">Avatar Profile</string>
+    <string name="aboutme">A propos de moi</string>
 </resources>
