@@ -1,5 +1,8 @@
 package com.openclassrooms.entrevoisins.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
 /**
@@ -16,7 +19,7 @@ public class Neighbour {
     /** Avatar */
     private String avatarUrl;
 
-    /** Adress */
+    /** Address */
     private String address;
 
     /** Phone number */
@@ -24,6 +27,9 @@ public class Neighbour {
 
     /** About me */
     private String aboutMe;
+
+    /** Favorite */
+    private boolean favorite;
 
     /**
      * Constructor
@@ -39,6 +45,7 @@ public class Neighbour {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.aboutMe = aboutMe;
+        this.favorite = false;
     }
 
     public long getId() {
@@ -89,6 +96,10 @@ public class Neighbour {
         this.aboutMe = aboutMe;
     }
 
+    public Boolean getFavorite() { return favorite; }
+
+    public void setFavorite(Boolean favorite) { this.favorite = favorite; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,4 +112,5 @@ public class Neighbour {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

@@ -1,16 +1,19 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.model.Neighbour;
+import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,13 +34,14 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
     public TextView mTextAbout;
     @BindView(R.id.profile_activity_name2_text)
     public TextView mTextName2;
-    @BindView(R.id.profile_activity_adress_text)
+    @BindView(R.id.profile_activity_address_text)
     public TextView mTextAddress;
     @BindView(R.id.profile_activity_phone_text)
     public TextView mTextPhone;
     @BindView(R.id.profile_activity_website_text)
     public TextView mTextWebsite;
 
+    private NeighbourApiService mApiService;
     String mLinkFb;
 
     @Override
@@ -45,31 +49,34 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_neighbour);
         ButterKnife.bind(this);
+        mApiService = DI.getNeighbourApiService();
 
         Intent mIntent = getIntent();
-        String mName = mIntent.getStringExtra("NAME");
-        Uri mAvatar = Uri.parse(mIntent.getStringExtra("AVATAR"));
-        String mAddress = mIntent.getStringExtra("ADDRESS");
-        String mPhone = mIntent.getStringExtra("PHONE");
-        String mAbout = mIntent.getStringExtra("ABOUT");
-
-        mLinkFb = "https://facebook.com/" + mName;
+        long id = mIntent.getLongExtra("ID",-1);
+        Neighbour neighbour = mApiService.getNeighbour(id);
+        Log.d("DEBUG", String.valueOf(id));
+        mLinkFb = "https://facebook.com/" + neighbour.getName();
 
         Glide.with(mImage.getContext())
-                .load(mAvatar)
+                .load(neighbour.getAvatarUrl())
                 .into(mImage);
-        mTextName.setText(mName);
-        mTextAbout.setText(mAbout);
-        mTextName2.setText(mName);
-        mTextAddress.setText(mAddress);
-        mTextPhone.setText(mPhone);
+        mTextName.setText(neighbour.getName());
+        mTextAbout.setText(neighbour.getAboutMe());
+        mTextName2.setText(neighbour.getName());
+        mTextAddress.setText(neighbour.getAddress());
+        mTextPhone.setText(neighbour.getPhoneNumber());
         mTextWebsite.setText(mLinkFb);
 
 
         mButtonPrevious.setOnClickListener(v -> finish());
 
         mButtonFav.setOnClickListener(v -> {
-
+            if(!neighbour.getFavorite()) {
+                mApiService.addFavoriteNeighbour(neighbour);
+            }
+            else{
+                mApiService.deleteFavoriteNeighbour(neighbour);
+            }
         });
     }
 }

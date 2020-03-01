@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
+import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,10 +26,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder>{
+public class FavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteNeighbourRecyclerViewAdapter.ViewHolder>{
 
+    private NeighbourApiService mApiService;
     private final List<Neighbour> mNeighbours;
-    MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
+    FavoriteNeighbourRecyclerViewAdapter(List<Neighbour> items) {
         mNeighbours = items;
     }
 
@@ -36,7 +38,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_neighbour, parent, false);
+                .inflate(R.layout.fragment_favorite_neighbour, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,7 +51,14 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mNeighbourAvatar);
 
-        holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteNeighbourEvent(neighbour)));
+        holder.mFavButton.setOnClickListener(v -> {
+            if(neighbour.getFavorite()) {
+                neighbour.setFavorite(false);
+            }
+            else{
+                neighbour.setFavorite(true);
+            }
+        });
 
         holder.mListItem.setOnClickListener(v -> {
             Intent mIntent = new Intent(v.getContext(), ProfileNeighbourActivity.class);
@@ -64,13 +73,13 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.item_list_avatar)
+        @BindView(R.id.item_list_avatar1)
         public ImageView mNeighbourAvatar;
-        @BindView(R.id.item_list_name)
+        @BindView(R.id.item_list_name1)
         public TextView mNeighbourName;
-        @BindView(R.id.item_list_delete_button)
-        public ImageButton mDeleteButton;
-        @BindView(R.id.item_neighbour)
+        @BindView(R.id.item_list_fav_button)
+        public ImageButton mFavButton;
+        @BindView(R.id.item_favorite_neighbour)
         public ConstraintLayout mListItem;
 
 

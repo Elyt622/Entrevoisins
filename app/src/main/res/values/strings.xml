@@ -6,4 +6,6 @@
     <string name="previous_button">Previous button</string>
     <string name="avatar_profile">Avatar Profile</string>
     <string name="aboutme">A propos de moi</string>
+    <string name="avatar_neighbour">Avatar Neighbour</string>
+    <string name="favorite_button">Favorite Button</string>
 </resources>
