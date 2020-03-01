@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
@@ -59,24 +60,37 @@ public class ProfileNeighbourActivity extends AppCompatActivity {
 
         Glide.with(mImage.getContext())
                 .load(neighbour.getAvatarUrl())
+                .centerCrop()
                 .into(mImage);
+
         mTextName.setText(neighbour.getName());
         mTextAbout.setText(neighbour.getAboutMe());
         mTextName2.setText(neighbour.getName());
         mTextAddress.setText(neighbour.getAddress());
         mTextPhone.setText(neighbour.getPhoneNumber());
         mTextWebsite.setText(mLinkFb);
-
+        checkNeighbourFavorite(neighbour);
 
         mButtonPrevious.setOnClickListener(v -> finish());
 
         mButtonFav.setOnClickListener(v -> {
             if(!neighbour.getFavorite()) {
                 mApiService.addFavoriteNeighbour(neighbour);
+                checkNeighbourFavorite(neighbour);
             }
             else{
                 mApiService.deleteFavoriteNeighbour(neighbour);
+                checkNeighbourFavorite(neighbour);
             }
         });
+    }
+
+    public void checkNeighbourFavorite(Neighbour neighbour) {
+        if(!neighbour.getFavorite()) {
+            mButtonFav.setImageResource(R.drawable.ic_star_border_white_24dp);
+        }
+        else{
+            mButtonFav.setImageResource(R.drawable.ic_star_white_24dp);
+        }
     }
 }

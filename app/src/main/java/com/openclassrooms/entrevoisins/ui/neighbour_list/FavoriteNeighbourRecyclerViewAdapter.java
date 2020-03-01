@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class FavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteNeighbourRecyclerViewAdapter.ViewHolder>{
 
-    private NeighbourApiService mApiService;
+    private NeighbourApiService mApiService = DI.getNeighbourApiService();
     private final List<Neighbour> mNeighbours;
     FavoriteNeighbourRecyclerViewAdapter(List<Neighbour> items) {
         mNeighbours = items;
@@ -54,9 +55,11 @@ public class FavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<F
         holder.mFavButton.setOnClickListener(v -> {
             if(neighbour.getFavorite()) {
                 neighbour.setFavorite(false);
+                holder.mFavButton.setImageResource(R.drawable.ic_star_border_white_24dp);
             }
             else{
                 neighbour.setFavorite(true);
+                holder.mFavButton.setImageResource(R.drawable.ic_star_white_24dp);
             }
         });
 
@@ -88,4 +91,5 @@ public class FavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<F
             ButterKnife.bind(this, view);
         }
     }
+
 }
