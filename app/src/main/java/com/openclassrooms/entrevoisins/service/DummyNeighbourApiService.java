@@ -40,12 +40,13 @@ public class DummyNeighbourApiService implements NeighbourApiService {
         neighbours.add(neighbour);
     }
 
+    @Override
     public Neighbour getNeighbour(long index) {
         return neighbours.get((int) index);
     } //cast int in long
 
     @Override
-    public List<Neighbour> getListFavoriteNeighbours() {
+    public List<Neighbour> getFavoriteNeighbours() {
         ArrayList<Neighbour> favoriteNeighbours = new ArrayList<>();
         for (Neighbour i : neighbours) {
             if (i.getFavorite()) {
