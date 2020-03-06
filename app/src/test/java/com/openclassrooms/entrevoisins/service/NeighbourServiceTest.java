@@ -45,7 +45,8 @@ public class NeighbourServiceTest {
 
     @Test
     public void createNeighbourWithSuccess() {
-        Neighbour neighbourToCreate = service.getNeighbours().get(0);
+        Neighbour neighbourToCreate =  new Neighbour(13, "Joseph", "https://i.pravatar.cc/300?u=a042581f3e39026702d", "Saint-Pierre-du-Mont ; 5km",
+                "+33 6 86 57 90 14",  "Bonjour !Je souhaiterais faire de la marche nordique. Pas initiée, je recherche une ou plusieurs personnes susceptibles de m'accompagner !J'aime les jeux de cartes tels la belote et le tarot..");
         service.createNeighbour(neighbourToCreate);
         assertTrue(service.getNeighbours().contains(neighbourToCreate));
     }
@@ -73,15 +74,16 @@ public class NeighbourServiceTest {
     @Test
     public void deleteFavoriteNeighbourWithSuccess() {
         Neighbour neighbourToDeleteFavorite = service.getNeighbours().get(0);
-        neighbourToDeleteFavorite.setFavorite(true);
+        service.addFavoriteNeighbour(neighbourToDeleteFavorite);
+        assertTrue(service.getFavoriteNeighbours().contains(neighbourToDeleteFavorite));
         service.deleteFavoriteNeighbour(neighbourToDeleteFavorite);
         assertFalse(service.getFavoriteNeighbours().contains(neighbourToDeleteFavorite));
     }
 
     @Test
     public void getNeighbourWithSuccess() {
-        Neighbour neighbourToGet = service.getNeighbours().get(0);
-        Neighbour neighbourToGet2 = service.getNeighbour(0);
+        Neighbour neighbourToGet = service.getNeighbours().get(5);
+        Neighbour neighbourToGet2 = service.getNeighbour(neighbourToGet.getId());
         assertEquals(neighbourToGet, neighbourToGet2);
     }
 

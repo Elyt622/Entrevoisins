@@ -41,9 +41,16 @@ public class DummyNeighbourApiService implements NeighbourApiService {
     }
 
     @Override
-    public Neighbour getNeighbour(long index) {
-        return neighbours.get((int) index);
-    } //cast int in long
+    public Neighbour getNeighbour(long id) {
+        Neighbour neighbour = null;
+        for(Neighbour i : neighbours) {
+            if(i.getId() == id){
+                neighbour = i;
+                break;
+            }
+        }
+        return neighbour;
+    }
 
     @Override
     public List<Neighbour> getFavoriteNeighbours() {
