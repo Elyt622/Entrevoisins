@@ -86,6 +86,7 @@ public class NeighboursListTest {
     @Test
     public void neighbourProfileIsLaunched() {
         onView(ViewMatchers.withId(R.id.list_neighbours)).perform(click());
+        onView(ViewMatchers.withId(R.id.profile_activity_fav_button)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -105,16 +106,5 @@ public class NeighboursListTest {
         onView(ViewMatchers.withId(R.id.profile_activity_fav_button)).perform(click());
         onView(ViewMatchers.withId(R.id.profile_activity_previous_button)).perform(click());
         onView(ViewMatchers.withId(R.id.list_favorite_neighbours)).check(matches(hasChildCount(0)));
-    }
-
-    @Test
-    public void favoriteNeighbourList() {
-        onView(ViewMatchers.withId(R.id.list_neighbours)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(ViewMatchers.withId(R.id.profile_activity_fav_button)).perform(click());
-        onView(ViewMatchers.withId(R.id.profile_activity_previous_button)).perform(click());
-
-        onView(ViewMatchers.withId(R.id.list_favorite_neighbours)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
-
     }
 }
