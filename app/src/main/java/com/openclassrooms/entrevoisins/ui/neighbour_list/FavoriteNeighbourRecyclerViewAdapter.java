@@ -65,7 +65,7 @@ public class FavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<F
 
         holder.mListItem.setOnClickListener(v -> {
             Intent mIntent = new Intent(v.getContext(), ProfileNeighbourActivity.class);
-            mIntent.putExtra("ID", neighbour.getId()-1);
+            mIntent.putExtra("ID", neighbour.getId());
             ActivityCompat.startActivity(v.getContext(), mIntent, null);
         });
     }
